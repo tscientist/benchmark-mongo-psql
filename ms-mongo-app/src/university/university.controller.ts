@@ -27,7 +27,7 @@ export class UniversityController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.universityService.findOne(+id);
+    return this.universityService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class UniversityController {
     @Param('id') id: string,
     @Body() updateUniversityDto: UpdateUniversityDto,
   ) {
-    return this.universityService.update(+id, updateUniversityDto);
+    return this.universityService.update(id, updateUniversityDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.universityService.remove(+id);
+    return this.universityService.remove(id);
   }
 }
