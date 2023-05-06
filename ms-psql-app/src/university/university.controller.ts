@@ -12,9 +12,11 @@ export class UniversityController {
     return this.universityService.create(createUniversityDto);
   }
 
-  @Post()
-  createMany(@Body() createUniversityDto: CreateUniversityDto) {
-    return this.universityService.create(createUniversityDto);
+  @Get('/createAll')
+  async createMany() {
+    let manyUniversitiesDto = await this.universityService.getUniversitiesBody();
+
+    return this.universityService.createAll(manyUniversitiesDto);
   }
 
   @Get()

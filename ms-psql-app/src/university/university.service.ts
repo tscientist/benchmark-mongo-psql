@@ -4,6 +4,7 @@ import { UpdateUniversityDto } from './dto/update-university.dto';
 import { InjectDataSource, InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { University } from './entities/university.entity';
 import { Repository, EntityManager, DataSource } from 'typeorm';
+import axios from 'axios';
 
 
 @Injectable()
@@ -22,7 +23,7 @@ export class UniversityService {
       .values({
         ...universityBody 
       })
-      .execute()
+      .execute();
     
     const duration = Date.now() - before;
 
@@ -37,6 +38,29 @@ export class UniversityService {
 
       console.log(`CreateOne - Query: ${universitiesQuery}\n Time: ${duration} ms`)
       return university;
+  }
+
+  async createAll(universityBody: CreateUniversityDto[]) {
+    const before = Date.now();
+
+    const university = await this.dataSource
+      .createQueryBuilder()
+      .insert()
+      .into(University)
+      .values(universityBody)
+      .execute();
+    
+    const duration = Date.now() - before;
+
+    const universitiesQuery = this.dataSource
+      .createQueryBuilder()
+      .insert()
+      .into(University)
+      .values(universityBody)
+      .getSql();
+
+    console.log(`CreateAll - Query: ${universitiesQuery}\n Time: ${duration} ms`)
+    return university;
   }
 
   async findAll() {
@@ -154,6 +178,24 @@ export class UniversityService {
       .getSql();
       
     console.log(`DeleteAll - Query: ${universitiesQuery}\n Time: ${duration} ms`)
+
+    return universities;
+  }
+
+  async getUniversitiesBody(){
+    let response = await axios.get('http://universities.hipolabs.com/search');
+    let universities: CreateUniversityDto[] = [];
+
+    response.data.forEach(university => {
+      universities.push({
+        "name": university.name,
+        "domain": university.domains[0],
+        "country": university.country,
+        "country_code": university.alpha_two_code,
+        "state_province": university.state_province,
+        "web_page": university.web_pages[0],
+      });
+    });
 
     return universities;
   }
