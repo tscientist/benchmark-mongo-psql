@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.3.0",
     "@nestjs/typeorm": "^9.0.1",
+    "axios": "^1.4.0",
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
     "migrate": "^1.8.0",
