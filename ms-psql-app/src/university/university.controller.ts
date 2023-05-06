@@ -12,13 +12,23 @@ export class UniversityController {
     return this.universityService.create(createUniversityDto);
   }
 
+  @Post()
+  createMany(@Body() createUniversityDto: CreateUniversityDto) {
+    return this.universityService.create(createUniversityDto);
+  }
+
   @Get()
   findAll() {
     return this.universityService.findAll();
   }
 
+  @Get('/name/:name')
+  findOne(@Param('name') name: string) {
+    return this.universityService.findOneByName(name);
+  }
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOneById(@Param('id') id: string) {
     return this.universityService.findOne(+id);
   }
 
@@ -27,8 +37,14 @@ export class UniversityController {
     return this.universityService.update(+id, updateUniversityDto);
   }
 
+  @Delete('/removeAll')
+  removeAll() {
+    return this.universityService.removeAll();
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.universityService.remove(+id);
   }
+
 }
