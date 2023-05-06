@@ -22,7 +22,7 @@ export class UniversityService {
       .values({
         ...universityBody 
       })
-      .execute()
+      .execute();
     
     const duration = Date.now() - before;
 
@@ -36,6 +36,35 @@ export class UniversityService {
       .getSql();
 
       console.log(`CreateOne - Query: ${universitiesQuery}\n Time: ${duration} ms`)
+      return university;
+  }
+
+  async createAll(universityBody: CreateUniversityDto) {
+    const before = Date.now();
+
+    const university = await this.dataSource
+      .createQueryBuilder()
+      .insert()
+      .into(University)
+      .values([
+          universityBody,
+          universityBody,
+      ])
+      .execute();
+    
+    const duration = Date.now() - before;
+
+    const universitiesQuery = this.dataSource
+      .createQueryBuilder()
+      .insert()
+      .into(University)
+      .values([
+          universityBody,
+          universityBody,
+      ])
+      .getSql();
+
+      console.log(`CreateAll - Query: ${universitiesQuery}\n Time: ${duration} ms`)
       return university;
   }
 
