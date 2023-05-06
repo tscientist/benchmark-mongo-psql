@@ -1,23 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUniversityDto } from './dto/create-university.dto';
 import { UpdateUniversityDto } from './dto/update-university.dto';
-import { University } from './entities/university.entity';
-import { MongoRepository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectModel } from '@nestjs/mongoose';
+import { University } from './schemas/university.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UniversityService {
-  constructor(
-    @InjectRepository(University)
-    private readonly universitiesRepository: MongoRepository<University>,
-  ) {}
+  constructor(@InjectModel(University.name) private universityModel: Model<University>) {}
 
-  create(createUniversityDto: CreateUniversityDto) {
-    return 'This action adds a new university';
+  async create(createUniversityDto: CreateUniversityDto): Promise<University> {
+    const createdCat = new this.universityModel(createUniversityDto);
+    return createdCat.save();
   }
 
-  findAll() {
-    return `This action returns all university`;
+  async findAll(): Promise<University[]> {
+    return this.universityModel.find().exec();
   }
 
   findOne(id: number) {
