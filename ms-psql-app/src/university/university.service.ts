@@ -183,7 +183,7 @@ export class UniversityService {
   }
 
   async getUniversitiesBody(){
-    let response = await axios.get('http://universities.hipolabs.com/search?country=brazil');
+    let response = await axios.get('http://universities.hipolabs.com/search');
     let universities: CreateUniversityDto[] = [];
 
     response.data.forEach(university => {
