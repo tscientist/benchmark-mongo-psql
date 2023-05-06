@@ -18,7 +18,7 @@ export const typeOrmConfig: TypeOrmModuleOptions  = {
 
 @Module({
   imports: [TypeOrmModule.forRoot(typeOrmConfig), UniversityModule],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
