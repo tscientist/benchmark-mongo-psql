@@ -92,7 +92,7 @@ export class UniversityService {
       .select('university')
       .from(University, 'university')
       .where("university.name= :universitiesName", { universitiesName: name })
-      .getOne();
+      .getMany();
 
     const duration = Date.now() - before;
 
@@ -116,7 +116,7 @@ export class UniversityService {
       .select('university')
       .from(University, 'university')
       .where("university.id= :universitiesId", { universitiesId: id })
-      .getOne();
+      .getMany();
 
     const duration = Date.now() - before;
 
@@ -183,20 +183,25 @@ export class UniversityService {
   }
 
   async getUniversitiesBody(){
-    let response = await axios.get('http://universities.hipolabs.com/search');
-    let universities: CreateUniversityDto[] = [];
-
-    response.data.forEach(university => {
-      universities.push({
-        "name": university.name,
-        "domain": university.domains[0],
-        "country": university.country,
-        "country_code": university.alpha_two_code,
-        "state_province": university.state_province,
-        "web_page": university.web_pages[0],
+    try {
+      let response = await axios.get('http://universities.hipolabs.com/search');
+      let universities: CreateUniversityDto[] = [];
+  
+      response.data.forEach(university => {
+        universities.push({
+          "name": university.name,
+          "domain": university.domains[0],
+          "country": university.country,
+          "country_code": university.alpha_two_code,
+          "state_province": university.state_province,
+          "web_page": university.web_pages[0],
+        });
       });
-    });
-
-    return universities;
+      
+  
+      return universities;
+    }catch(error) {
+      console.log(error)
+    }
   }
 }

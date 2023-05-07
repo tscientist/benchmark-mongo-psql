@@ -14,7 +14,7 @@ export class UniversityController {
 
   @Get('/createAll')
   async createMany() {
-    let manyUniversitiesDto = await this.universityService.getUniversitiesBody();
+    let manyUniversitiesDto = await this.universityService.getUniversitiesBody(); //Requisição na api de universidades
 
     return this.universityService.createAll(manyUniversitiesDto);
   }
