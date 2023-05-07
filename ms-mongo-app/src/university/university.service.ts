@@ -49,17 +49,17 @@ export class UniversityService {
     return universities;
   }
 
-  async findOneByName(name: string): Promise<University> {
+  async findOneByName(name: string): Promise<University[]> {
     const before = Date.now();
-    const university = await this.universityModel.findOne({ name });
+    const university = await this.universityModel.find({ name });
     const duration = Date.now() - before;
     console.log(`findOneByName - Query: \n Time: ${duration} ms`);
     return university;
   }
 
-  async findOne(id: string): Promise<University> {
+  async findOne(id: string): Promise<University[]> {
     const before = Date.now();
-    const university = await this.universityModel.findById(id);
+    const university = await this.universityModel.find( { _id: id });
     const duration = Date.now() - before;
     console.log(`findOne - Query: \n Time: ${duration} ms`);
     return university;
@@ -105,16 +105,17 @@ export class UniversityService {
     const response = await axios.get('http://universities.hipolabs.com/search');
     const universities: CreateUniversityDto[] = [];
 
-    response.data.forEach((university) => {
-      universities.push({
-        name: university.name,
-        domain: university.domains[0],
-        country: university.country,
-        country_code: university.alpha_two_code,
-        state_province: university.state_province,
-        web_page: university.web_pages[0],
+      response.data.forEach((university) => {
+        universities.push({
+          name: university.name,
+          domain: university.domains[0],
+          country: university.country,
+          country_code: university.alpha_two_code,
+          state_province: university.state_province,
+          web_page: university.web_pages[0],
+        });
       });
-    });
+    
 
     return universities;
   }
